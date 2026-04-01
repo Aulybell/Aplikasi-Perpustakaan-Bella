@@ -1,3 +1,38 @@
+﻿<?php
+
+use Livewire\WithPagination;
+use Livewire\WithoutUrlPagination;
+use App\Models\User;
+use Livewire\Component;
+
+new class extends Component
+{
+    use WithPagination, WithoutUrlPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    public function getUsersProperty()
+    {
+        return User::whereIn('role', ['peminjam', 'user'])->paginate(10);
+    }
+
+    public function delete($id)
+    {
+        try {
+            $user = User::find($id);
+            if ($user) {
+                $name = $user->name;
+                $user->delete();
+                session()->flash('message', "User '$name' berhasil dihapus");
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
+};
+?>
+
 <style>
     .users-wrap { font-family: 'DM Sans', 'Segoe UI', sans-serif; }
 
@@ -110,9 +145,7 @@
 
 <div class="users-wrap">
 
-    @php
-        $list = $users ?? ($this->users ?? \App\Models\User::whereIn('role', ['peminjam','user'])->paginate(10));
-    @endphp
+    @php $list = $this->users; @endphp
 
     {{-- ── Alert ── --}}
     @if(session()->has('message'))
@@ -170,11 +203,12 @@
                                 {{ ucfirst($data->role) }}
                             </span>
                         </td>
-                        <td>
-                            <button wire:click="destroy({{ $data->id }})"
-                                    wire:confirm="Hapus user ini?"
+                        <td style="text-align:center;">
+                            <button wire:click="delete({{ $data->id }})" 
+                                    wire:confirm="Yakin hapus user '{{ $data->name }}'?"
+                                    type="button" 
                                     class="btn-delete">
-                                <i class="fas fa-trash"></i> Hapus
+                                <i class="fas fa-trash-alt"></i> Hapus
                             </button>
                         </td>
                     </tr>
@@ -192,7 +226,7 @@
             </table>
         </div>
 
-        {{-- ── Pagination ── --}}
+        {{-- ── Pagination --}}
         <div class="users-footer">
             {{ $list->links() }}
         </div>
