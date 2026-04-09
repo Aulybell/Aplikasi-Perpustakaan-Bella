@@ -16,13 +16,14 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
+            'email' =>  'required|email|unique:users,email',
             'password' => 'required',
             'alamat' => 'required'
         ], [
             'name.required' => 'Nama wajib diisi',
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Email tidak valid',
+            'email.unique' => 'Email sudah terdaftar',
             'password.required' => 'Password wajib diisi',
             'alamat.required' => 'Alamat wajib diisi'
         ]);

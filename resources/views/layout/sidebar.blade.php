@@ -22,6 +22,7 @@
                         <a href="{{ route('buku') }}" class="nav-item nav-link"><i class="fas fa-pen me-2"></i>Kelola Buku</a>
                         <a href="{{ route('kategori.index') }}" class="nav-item nav-link"><i class="fas fa-tags me-2"></i>Kategori</a>
                         <a href="{{ route('pinjam') }}" class="nav-item nav-link"><i class="fas fa-bookmark me-2"></i>Peminjaman</a>
+                        <a href="{{ route('ulasan.admin') }}" class="nav-item nav-link"><i class="fas fa-comments me-2"></i>Ulasan</a>
                         <a href="{{ route('laporan') }}" class="nav-item nav-link"><i class="fas fa-file me-2"></i>Laporan</a>
                     @elseif(Auth::check() && Auth::user()->role === 'petugas')
                         <a href="{{ route('dashboard') }}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
@@ -29,6 +30,7 @@
                         </div>
                         <a href="{{ route('buku') }}" class="nav-item nav-link"><i class="fas fa-pen me-2"></i>Kelola Buku</a>
                         <a href="{{ route('pinjam') }}" class="nav-item nav-link"><i class="fas fa-bookmark me-2"></i>Peminjaman</a>
+                        <a href="{{ route('ulasan.admin') }}" class="nav-item nav-link"><i class="fas fa-comments me-2"></i>Ulasan</a>
                         <a href="{{ route('laporan') }}" class="nav-item nav-link"><i class="fas fa-file me-2"></i>Laporan</a>
                     @elseif(Auth::check() && Auth::user()->role === 'user')
                         <a href="{{ route('koleksi') }}" class="nav-item nav-link"><i class="fas fa-book me-2"></i>Koleksi</a>

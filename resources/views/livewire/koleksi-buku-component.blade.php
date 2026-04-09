@@ -26,18 +26,17 @@ new class extends Component
 
     public function getBukusProperty()
     {
-        return Buku::query()
+        $query = Buku::with('kategori')
             ->when($this->search !== '', function ($query) {
-                $search = strtolower($this->search);
-                $query->where(function ($q) use ($search) {
-                    $q->whereRaw('LOWER(judul) LIKE ?', ["%{$search}%"])
-                      ->orWhereRaw('LOWER(pengarang) LIKE ?', ["%{$search}%"]);
-                });
+                $query->where('judul', 'like', '%' . $this->search . '%');
             })
             ->when($this->filterKategori !== '', function ($query) {
-                $query->where('kategori', $this->filterKategori);
-            })
-            ->get();
+                $query->whereHas('kategori', function($q) {
+                 $q->where('nama_kategori', $this->filterKategori);
+                });
+            });
+
+        return $query->get();
     }
 
     public function getKategorisProperty()
@@ -176,6 +175,40 @@ new class extends Component
     .search-input:focus {
         border-color: var(--blue-400);
         box-shadow: 0 0 0 3px rgba(96,165,250,0.15);
+    }
+
+    /* ── Filters ── */
+    .filter-wrap {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+    }
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .filter-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--gray-700);
+        text-align: center;
+    }
+    .filter-select {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1.5px solid var(--blue-100);
+        background: var(--white);
+        font-size: 0.85rem;
+        color: var(--gray-900);
+        outline: none;
+        transition: border-color 0.2s;
+        min-width: 140px;
+    }
+    .filter-select:focus {
+        border-color: var(--blue-400);
     }
 
     /* ── Kategori tabs ── */
@@ -389,10 +422,10 @@ new class extends Component
     <div class="search-wrap">
         <i class="fas fa-search"></i>
         <input
-            wire:model.debounce.500ms="search"
+            wire:model.live="search"
             type="text"
             class="search-input"
-            placeholder="Cari judul atau pengarang…"
+            placeholder="Cari judul buku…"
             name="search"
             value="{{ $search }}">
     </div>

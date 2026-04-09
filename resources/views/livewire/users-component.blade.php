@@ -203,7 +203,7 @@ new class extends Component
                                 {{ ucfirst($data->role) }}
                             </span>
                         </td>
-                        <td style="text-align:center;">
+                        <td>
                             <button wire:click="delete({{ $data->id }})" 
                                     wire:confirm="Yakin hapus user '{{ $data->name }}'?"
                                     type="button" 

@@ -51,6 +51,11 @@ class UlasanController extends Controller
      */
     public function store(Request $request, $bukuId)
     {
+        // Pastikan hanya user dengan role 'user' yang bisa memberi ulasan
+        if (Auth::user()->role !== 'user') {
+            abort(403, 'Hanya peminjam yang dapat memberi ulasan.');
+        }
+
         // Pastikan buku ada
         $buku = Buku::findOrFail($bukuId);
 

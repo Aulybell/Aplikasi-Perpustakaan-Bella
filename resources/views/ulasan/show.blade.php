@@ -404,6 +404,7 @@
             </div>
 
             {{-- ── Form Ulasan ── --}}
+            @if(auth()->check() && auth()->user()->role === 'user')
             <div class="ul-section-label">
                 <div class="ul-section-label-line"></div>
                 <div class="ul-section-label-text">Tulis Ulasan</div>
@@ -532,4 +533,5 @@
 })();
 </script>
 @endauth
+@endif
 @endsection

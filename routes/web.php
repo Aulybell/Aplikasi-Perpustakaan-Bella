@@ -41,6 +41,7 @@ Route::middleware(['auth', 'petugas'])->group(function () {
     Route::resource('kategori', KategoriController::class);
     Route::get('/laporan', fn() => view('laporan.index'))->name('laporan');
     Route::get('/laporan/print', [LaporanController::class, 'print'])->name('laporan.print');
+    Route::get('/ulasan-admin', fn() => view('ulasan.admin'))->name('ulasan.admin');
 });
 
 // ── Peminjam only ──────────────────────────────────────────────────────────
